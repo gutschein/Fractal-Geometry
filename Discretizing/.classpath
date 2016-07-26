@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Points, Transformations and Iterated Function Systems"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Discrete Sets and Maps"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Tuples and Buffers"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

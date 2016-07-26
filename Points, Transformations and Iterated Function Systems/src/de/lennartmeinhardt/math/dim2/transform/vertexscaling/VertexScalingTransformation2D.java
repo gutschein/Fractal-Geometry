@@ -1,0 +1,16 @@
+package de.lennartmeinhardt.math.dim2.transform.vertexscaling;
+
+import de.lennartmeinhardt.math.dim2.transform.PointTransformation2D;
+import de.lennartmeinhardt.math.dim2.transform.affine.AdapterProjectiveToAffine2D;
+
+public interface VertexScalingTransformation2D
+extends PointTransformation2D, AdapterAffineToVertexScale2D, AdapterProjectiveToAffine2D {
+	
+	@Override default double transformX(double x, double y) {
+		return getScaling() * x + (1 - getScaling()) * getVertexX();
+	}
+	
+	@Override default double transformY(double x, double y) {
+		return getScaling() * y + (1 - getScaling()) * getVertexY();
+	}
+}
