@@ -101,6 +101,18 @@ public class UpperLowerExamples {
 	
 	
 	/**
+	 * Get the discrete double map corresponding to the dirac measure at the left transformations' fixed point.
+	 * 
+	 * @param resolution the map resolution
+	 * @return discretization of the left fixed point's Dirac measure
+	 */
+	public static OperableDiscreteDoubleMap2D<DiscreteRectangle> getDiscreteDiracMap(int resolution) {
+		DiscreteDoubleMap2D startMap = DiscreteDoubleMap2D.ifThenElse((x, y) -> x == resolution / 4 && y == resolution / 2, DiscreteDoubleMap2D.ofConstant(1), DiscreteDoubleMap2D.ZERO);
+		return startMap.asOperable(new BaseSquare(resolution));
+	}
+	
+	
+	/**
 	 * Convert a superIFS of point transformations to a superIFS of discrete transformations.
 	 * 
 	 * @param superIfs superIFS of point transformations

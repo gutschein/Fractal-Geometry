@@ -30,17 +30,14 @@ import de.lennartmeinhardt.util.TimingHelper;
  * Creates the left/right point-wise frequency map image.
  * It is scaled to attain the value 1. No further amplification is necessary.
  * 
- * Calculation takes about an hour.
- * 
  * @author Lennart Meinhardt
  */
 public class LeftRightPointWiseFrequency {
 	
 	private static final int resolution = 2500;
-	private static final int iterationsToDraw = 40000;
+	private static final int iterationsToDraw = 100;
 	private static final DiscreteRectangle bounds = new BaseSquare(resolution);
 	private static final Discretizer2D discretizer = new BaseDiscretizer2D(new LinearRescaleDiscretizer(resolution));
-//	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
 	
 	private static final RangeRandomIntGenerator randomGenerator = new BaseRandomRangeIntGenerator();
 	private static final ChoiceGeneratorIteratedFunctionSystem<? extends IteratedFunctionSystem<? extends DiscreteTransformation2D>> discreteSuperIfs;

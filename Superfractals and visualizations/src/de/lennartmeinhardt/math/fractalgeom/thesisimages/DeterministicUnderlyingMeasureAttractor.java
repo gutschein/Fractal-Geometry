@@ -5,9 +5,8 @@ import java.awt.image.BufferedImage;
 import de.lennartmeinhardt.imaging.Amplifiers;
 import de.lennartmeinhardt.imaging.ArgbMapHelper;
 import de.lennartmeinhardt.imaging.SimpleImageDisplay;
-import de.lennartmeinhardt.math.discrete.BaseDiscretizer2D;
 import de.lennartmeinhardt.math.discrete.Discretizer2D;
-import de.lennartmeinhardt.math.discrete.LinearRescaleDiscretizer;
+import de.lennartmeinhardt.math.discrete.ToUnitRectangleDiscretizer2D;
 import de.lennartmeinhardt.math.discrete2d.DiscreteTransformation2D;
 import de.lennartmeinhardt.math.discrete2d.doublemap.DiscreteDoubleMap2D;
 import de.lennartmeinhardt.math.discrete2d.doublemap.FlatArrayDiscreteDoubleMap2D;
@@ -27,8 +26,6 @@ import de.lennartmeinhardt.util.TimingHelper;
  * A start map is transformed a fixed number of times.
  * It is scaled to attain the value 1 and then amplified using the default variants.
  * 
- * Calculation takes about a minute.
- * 
  * @author Lennart Meinhardt
  */
 public class DeterministicUnderlyingMeasureAttractor {
@@ -36,11 +33,10 @@ public class DeterministicUnderlyingMeasureAttractor {
 	private static final int iterations = 30;
 	private static final int resolution = 2500;
 	private static final DiscreteRectangle bounds = new BaseSquare(resolution);
-	private static final double amplifyParam = 4;
-	private static final OperableDiscreteDoubleMap2D<DiscreteRectangle> startMap = UpperLowerExamples.getDiscreteCircleDoubleMapNormed(resolution);
+	private static final double amplifyParam = 5;
+	private static final OperableDiscreteDoubleMap2D<DiscreteRectangle> startMap = UpperLowerExamples.getDiscreteDiracMap(resolution);
 
-//	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
-	private static final Discretizer2D discretizer = new BaseDiscretizer2D(new LinearRescaleDiscretizer(resolution), new LinearRescaleDiscretizer(resolution));
+	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
 	private static final ProbabilityIteratedFunctionSystem<? extends DiscreteTransformation2D> discreteUnderlyingIfs = new EqualProbabilitiesIteratedFunctionSystem<>(UpperLowerExamples.getDiscreteIfs(UpperLowerExamples.underlyingIfs, discretizer));
 
 	

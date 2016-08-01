@@ -28,8 +28,6 @@ import de.lennartmeinhardt.util.TimingHelper;
  * Create the upper/lower underlying measure attractor using the chaos game.
  * It is scaled to attain the value 1 and then amplified using the default variants.
  * 
- * Calculation takes a few seconds.
- * 
  * @author Lennart Meinhardt
  */
 public class ChaosGameUnderlyingMeasureAttractor {
@@ -38,7 +36,7 @@ public class ChaosGameUnderlyingMeasureAttractor {
 	private static final int resolution = 2500;
 	private static final DiscreteRectangle bounds = new BaseSquare(resolution);
 	private static final Point2D startPoint = new ImmutablePoint2D(.25, .5);
-	private static final double amplifyParam = 4;
+	private static final double amplifyParam = 5;
 	private static final RangeRandomIntGenerator randomGenerator = new BaseRandomRangeIntGenerator();
 	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
 	private static final ChoiceGeneratorIteratedFunctionSystem<? extends PointTransformation2D> underlyingIfs = new EqualProbabilitiesChoiceGeneratorIteratedFunctionSystem<>(UpperLowerExamples.underlyingIfs, randomGenerator);

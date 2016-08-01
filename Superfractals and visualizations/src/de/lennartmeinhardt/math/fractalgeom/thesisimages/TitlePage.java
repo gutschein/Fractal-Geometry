@@ -1,6 +1,7 @@
 package de.lennartmeinhardt.math.fractalgeom.thesisimages;
 
 import java.awt.image.BufferedImage;
+import java.util.function.DoubleUnaryOperator;
 
 import de.lennartmeinhardt.imaging.Amplifiers;
 import de.lennartmeinhardt.imaging.ArgbMapHelper;
@@ -28,8 +29,6 @@ import de.lennartmeinhardt.util.TimingHelper;
  * Creates the title page image, i.e. the upper/lower underlying measure attractor.
  * It is scaled to attain the value 1 and then amplified using the power function.
  * 
- * Calculation takes about a minute.
- * 
  * @author Lennart Meinhardt
  */
 public class TitlePage {
@@ -38,7 +37,8 @@ public class TitlePage {
 	private static final int resolution = 3000;
 	private static final DiscreteRectangle bounds = new BaseSquare(resolution);
 	private static final Point2D startPoint = new ImmutablePoint2D(.25, .5);
-	private static final double amplifyParam = 4;
+	private static final double amplifyParam = 5;
+	private static final DoubleUnaryOperator amplifier = Amplifiers.amplifyMin(amplifyParam);
 	private static final RangeRandomIntGenerator randomGenerator = new BaseRandomRangeIntGenerator();
 	
 	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
@@ -71,7 +71,7 @@ public class TitlePage {
 		// scale the map so the value 1 is attained
 		DiscreteDoubleMap2D relativeMap = Amplifiers.scaleToMax(frequencyMap);
 		// amplify the map with 1 - (1-t)^p
-		relativeMap = relativeMap.pushForward(Amplifiers.amplifyPower(amplifyParam));
+		relativeMap = relativeMap.pushForward(amplifier);
 		
 		// create channel map
 		DiscreteIntMap2D channelMap = ArgbMapHelper.relativeMapToChannelMap(relativeMap);

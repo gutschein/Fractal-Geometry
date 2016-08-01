@@ -58,7 +58,15 @@ public class DiscreteChaosGameMeasureAttractorCalculator2D {
 	 * @param iterations the iterations to run
 	 */
 	public void calculate(int iterations) {
-		calculate(iterations, i -> {});
+//		calculate(iterations, i -> {});
+		for(int i = 0; i < iterations; i++) {
+			chaosGamePlayer.next();
+			Point2D lastPoint = chaosGamePlayer.getLastPoint();
+			int xAbsolute = discretizer.discretizeX(lastPoint.getX());
+			int yAbsolute = discretizer.discretizeY(lastPoint.getY());
+			frequencyMap.incrementValueAt(xAbsolute, yAbsolute);
+			iterationsCount++;
+		}
 	}
 	
 	/**

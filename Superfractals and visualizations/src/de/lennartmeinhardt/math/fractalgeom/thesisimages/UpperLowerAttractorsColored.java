@@ -23,8 +23,6 @@ import de.lennartmeinhardt.math.util.RangeRandomIntGenerator;
 /**
  * Create the upper/lower colored set attractors image.
  * 
- * Calculation takes a few seconds.
- * 
  * @author Lennart Meinhardt
  */
 public class UpperLowerAttractorsColored {

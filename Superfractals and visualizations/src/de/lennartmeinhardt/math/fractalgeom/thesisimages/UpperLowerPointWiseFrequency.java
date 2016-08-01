@@ -30,8 +30,6 @@ import de.lennartmeinhardt.util.TimingHelper;
  * Creates the upper/lower point-wise frequency map image.
  * It is scaled to attain the value 1 and then amplified using the default variants.
  * 
- * Calculation takes a few minutes.
- * 
  * @author Lennart Meinhardt
  */
 public class UpperLowerPointWiseFrequency {
@@ -40,9 +38,8 @@ public class UpperLowerPointWiseFrequency {
 	private static final int iterationsToSkip = 30;
 	private static final int iterationsToDraw = 10000;
 	private static final int resolution = 2500;
-	private static final double amplifyParam = 4;
+	private static final double amplifyParam = 5;
 	private static final DiscreteRectangle bounds = new BaseSquare(resolution);
-//	private static final Discretizer2D discretizer = new ToUnitRectangleDiscretizer2D(bounds);
 	private static final Discretizer2D discretizer = new BaseDiscretizer2D(new LinearRescaleDiscretizer(resolution));
 	
 	private static final RangeRandomIntGenerator randomGenerator = new BaseRandomRangeIntGenerator();

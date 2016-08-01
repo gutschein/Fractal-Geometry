@@ -56,7 +56,11 @@ public class DiscretePointwiseFrequencyCounter2D {
 	 * @param iterations the iterations to run
 	 */
 	public void calculate(int iterations) {
-		calculate(iterations, i -> {});
+		for(int i = 0; i < iterations; i++) {
+			chaosGamePlayer.next();
+			chaosGamePlayer.getLastPoint().forEachPoint(frequencyMap::incrementValueAt);
+			iterationsCount++;
+		}
 	}
 	
 	/**
