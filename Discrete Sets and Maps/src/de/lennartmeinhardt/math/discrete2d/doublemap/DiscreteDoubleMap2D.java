@@ -143,7 +143,7 @@ public interface DiscreteDoubleMap2D {
 	 * @return this map's support
 	 */
 	default DiscreteSet2D support() {
-		return levelSet(0);
+		return pointsSatisfying(d -> d != 0);
 	}
 	
 

@@ -147,12 +147,12 @@ public interface DiscreteIntMap2D {
 	
 	/**
 	 * Get the support of this map.
-	 * Contains the points for which this maps's value is zero.
+	 * Contains the points for which this maps's value is non-zero.
 	 * 
 	 * @return this map's support
 	 */
 	default DiscreteSet2D support() {
-		return levelSet(0);
+		return pointsSatisfying(d -> d != 0);
 	}
 	
 	

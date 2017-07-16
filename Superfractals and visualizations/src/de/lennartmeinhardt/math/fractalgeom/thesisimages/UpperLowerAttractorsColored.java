@@ -49,7 +49,7 @@ public class UpperLowerAttractorsColored {
 		ChoiceGeneratorIteratedFunctionSystem<? extends ArgbPointTransformation2D> lowerColoredEqualProbabilities = new EqualProbabilitiesChoiceGeneratorIteratedFunctionSystem<>(UpperLowerExamples.lowerColored, randomGenerator);
 		FlatArrayDiscreteIntMap2D lowerImage = playChaosGame(lowerColoredEqualProbabilities, lowerStartPoint);
 		
-		DiscreteIntMap2D overlayImage = DiscreteIntMap2D.ifThenElse(upperImage.support()::containsPointAt, lowerImage, upperImage);
+		DiscreteIntMap2D overlayImage = DiscreteIntMap2D.ifThenElse(upperImage.support()::containsPointAt, upperImage, lowerImage);
 		return overlayImage.asOperable(bounds);
 	}
 	
