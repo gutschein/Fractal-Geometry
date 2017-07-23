@@ -1,10 +1,7 @@
 package de.lennartmeinhardt.argb;
 
-import java.awt.Color;
-
 /**
  * Contains methods for manipulating integer colors with channels alpha, red, green, blue.
- * Preset colors' rgb values may be obtained using {@link Color#getRGB()}, for example.
  * 
  * @author Lennart Meinhardt
  */
