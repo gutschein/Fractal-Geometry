@@ -14,6 +14,7 @@ public interface MutableScaleRotateTranslateHolder2D extends ScaleRotateTranslat
 	MutableScaleRotateTranslateHolder2D setTranslateX(double translateX);
 	MutableScaleRotateTranslateHolder2D setTranslateY(double translateY);
 	
+	
 	default MutableScaleRotateTranslateHolder2D setTranslations(double translateX, double translateY) {
 		return setTranslateX(translateX).setTranslateY(translateY);
 	}

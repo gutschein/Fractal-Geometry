@@ -1,6 +1,7 @@
 package de.lennartmeinhardt.imaging;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Toolkit;
@@ -33,6 +34,9 @@ public class SimpleImageDisplay extends JFrame {
 	// the image being displayed
 	private BufferedImage image;
 	
+	// the image's background
+	private Color imageBackground;
+	
 	// the default file to save to
 	private File startFile;
 	
@@ -40,6 +44,10 @@ public class SimpleImageDisplay extends JFrame {
 	private boolean keepAspectRatio = DEF_KEEP_ASPECT_RATIO;
 	// allow the image to be enlarged
 	private boolean allowEnlarge = DEF_ALLOW_ENLARGE;
+	
+	// menu items
+	private JCheckBoxMenuItem keepAspectRatioMenuItem;
+	private JCheckBoxMenuItem allowEnlargeMenuItem;
 
 	
 	/**
@@ -116,6 +124,10 @@ public class SimpleImageDisplay extends JFrame {
 		repaint();
 	}
 	
+	public void setImageBackground(Color imageBackground) {
+		this.imageBackground = imageBackground;
+	}
+	
 	private JMenuBar createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 
@@ -148,19 +160,31 @@ public class SimpleImageDisplay extends JFrame {
 		JMenu viewMenu = new JMenu("View");
 		viewMenu.setMnemonic('V');
 		
-		JCheckBoxMenuItem keepAspectRatioItem = new JCheckBoxMenuItem("Keep aspect ratio", DEF_KEEP_ASPECT_RATIO);
-		keepAspectRatioItem.addActionListener(e -> repaint());
-		keepAspectRatioItem.addActionListener(e -> this.keepAspectRatio = keepAspectRatioItem.isSelected());
-		keepAspectRatioItem.setMnemonic('R');
-		viewMenu.add(keepAspectRatioItem);
+		keepAspectRatioMenuItem = new JCheckBoxMenuItem("Keep aspect ratio", DEF_KEEP_ASPECT_RATIO);
+		keepAspectRatioMenuItem.addActionListener(e -> repaint());
+		keepAspectRatioMenuItem.addActionListener(e -> this.keepAspectRatio = keepAspectRatioMenuItem.isSelected());
+		keepAspectRatioMenuItem.setMnemonic('R');
+		viewMenu.add(keepAspectRatioMenuItem);
 		
-		JCheckBoxMenuItem allowEnlargeItem = new JCheckBoxMenuItem("Allow enlargement", DEF_ALLOW_ENLARGE);
-		allowEnlargeItem.addActionListener(e -> repaint());
-		allowEnlargeItem.addActionListener(e -> this.allowEnlarge = allowEnlargeItem.isSelected());
-		allowEnlargeItem.setMnemonic('E');
-		viewMenu.add(allowEnlargeItem);
+		allowEnlargeMenuItem = new JCheckBoxMenuItem("Allow enlargement", DEF_ALLOW_ENLARGE);
+		allowEnlargeMenuItem.addActionListener(e -> repaint());
+		allowEnlargeMenuItem.addActionListener(e -> this.allowEnlarge = allowEnlargeMenuItem.isSelected());
+		allowEnlargeMenuItem.setMnemonic('E');
+		viewMenu.add(allowEnlargeMenuItem);
 		
 		return viewMenu;
+	}
+	
+	public void setAllowEnlarge(boolean allowEnlarge) {
+		this.allowEnlarge = allowEnlarge;
+		repaint();
+		allowEnlargeMenuItem.setSelected(allowEnlarge);
+	}
+	
+	public void setKeepAspectRatio(boolean keepAspectRatio) {
+		this.keepAspectRatio = keepAspectRatio;
+		repaint();
+		keepAspectRatioMenuItem.setSelected(keepAspectRatio);
 	}
 	
 	/**
@@ -218,33 +242,112 @@ public class SimpleImageDisplay extends JFrame {
 			if(image == null)
 				return;
 			
-			int imageWidth = image.getWidth();
-			int imageHeight = image.getHeight();
+			final int imageWidth = image.getWidth();
+			final int imageHeight = image.getHeight();
 			
-			int availableWidth = getWidth();
-			int availableHeight = getHeight();
-
-			int maxWidth = Math.min(imageWidth, availableWidth);
-			int maxHeight = Math.min(imageHeight, availableHeight);
+			final int availableWidth = getWidth();
+			final int availableHeight = getHeight();
 			
-			if(! allowEnlarge) {
-				maxWidth = Math.min(maxWidth, imageWidth);
-				maxHeight = Math.min(maxHeight, imageHeight);
+			final int maxWidth;
+			final int maxHeight;
+			
+			if(allowEnlarge) {
+				maxWidth = availableWidth;
+				maxHeight = availableHeight;
+			} else {
+				maxWidth = Math.min(imageWidth, availableWidth);
+				maxHeight = Math.min(imageHeight, availableHeight);
 			}
+			
+			final int widthToDraw;
+			final int heightToDraw;
 			
 			if(keepAspectRatio) {
 				double ratio = 1d * imageHeight / imageWidth;
-				maxHeight = (int) Math.min(maxHeight, maxWidth * ratio);
-				maxWidth = (int) (maxHeight / ratio);
+				heightToDraw = (int) Math.min(maxHeight, maxWidth * ratio);
+				widthToDraw = (int) (heightToDraw / ratio);
+			} else {
+				widthToDraw = maxWidth;
+				heightToDraw = maxHeight;
 			}
 			
-			int widthToDraw = maxWidth;
-			int heightToDraw = maxHeight;
-
 			int gapX = (availableWidth - widthToDraw) / 2;
 			int gapY = (availableHeight - heightToDraw) / 2;
-			g.clearRect(0, 0, availableWidth, availableHeight);
+			
+			if(imageBackground != null) {
+				g.setColor(imageBackground);
+				g.fillRect(gapX, gapY, widthToDraw, heightToDraw);
+			}
+			
 			g.drawImage(image, gapX, gapY, widthToDraw, heightToDraw, null);
+		}
+	}
+	
+	
+	public static class Builder {
+		
+		private String title;
+		private BufferedImage image;
+		private Color backgroundColor;
+		private Color imageBackground;
+		private boolean keepAspectRatio = DEF_KEEP_ASPECT_RATIO;
+		private boolean allowEnlarge = DEF_ALLOW_ENLARGE;
+		private boolean maximized;
+		
+		
+		public Builder setTitle(String title) {
+			this.title = title;
+			return this;
+		}
+		
+		public Builder setImage(BufferedImage image) {
+			this.image = image;
+			return this;
+		}
+		
+		public Builder setBackground(Color backgroundColor) {
+			this.backgroundColor = backgroundColor;
+			return this;
+		}
+		
+		public Builder setImageBackground(Color imageBackground) {
+			this.imageBackground = imageBackground;
+			return this;
+		}
+		
+		public Builder setKeepAspectRatio(boolean keepAspectRatio) {
+			this.keepAspectRatio = keepAspectRatio;
+			return this;
+		}
+		
+		public Builder setAllowEnlarge(boolean allowEnlarge) {
+			this.allowEnlarge = allowEnlarge;
+			return this;
+		}
+		
+		public Builder setMaximized(boolean maximized) {
+			this.maximized = maximized;
+			return this;
+		}
+		
+		public SimpleImageDisplay build() {
+			SimpleImageDisplay display = new SimpleImageDisplay();
+			
+			display.setTitle(title);
+			display.setImage(image);
+			if(backgroundColor != null)
+				display.setBackground(backgroundColor);
+			display.setImageBackground(imageBackground);
+			display.setKeepAspectRatio(keepAspectRatio);
+			display.setAllowEnlarge(allowEnlarge);
+			if(maximized)
+				display.setExtendedState(display.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+			
+			return display;
+		}
+		
+		public void buildAndShow() {
+			build().setVisible(true);
 		}
 	}
 }

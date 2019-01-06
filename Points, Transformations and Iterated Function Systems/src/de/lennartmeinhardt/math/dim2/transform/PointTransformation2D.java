@@ -47,4 +47,22 @@ public interface PointTransformation2D {
 	default double transformY(Point2D point) {
 		return transformY(point.getX(), point.getY());
 	}
+	
+	default PointTransformation2D andThen(PointTransformation2D outerTransformation) {
+		return new ConcatenatedPointTransformation2D(outerTransformation, this);
+	}
+	
+	
+	public static PointTransformation2D IDENTITY = new PointTransformation2D() {
+		
+		@Override
+		public double transformX(double x, double y) {
+			return x;
+		}
+		
+		@Override
+		public double transformY(double x, double y) {
+			return y;
+		}
+	};
 }

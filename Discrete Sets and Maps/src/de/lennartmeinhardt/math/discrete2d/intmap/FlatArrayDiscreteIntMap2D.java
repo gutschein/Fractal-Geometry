@@ -47,11 +47,19 @@ public class FlatArrayDiscreteIntMap2D implements OperableDiscreteIntMap2D<Discr
 	 * @param height the bounds' height
 	 */
 	public FlatArrayDiscreteIntMap2D(int left, int bottom, int width, int height) {
+		this(left, bottom, width, height, createArray(width, height));
+	}
+	
+	public FlatArrayDiscreteIntMap2D(int left, int bottom, int width, int height, int[] valuesRowWise) {
+		if(valuesRowWise == null || valuesRowWise.length != arraySize(width, height))
+			throw new IllegalArgumentException("Given values array is not of correct size");
+		
 		this.width = width;
 		this.height = height;
 		this.left = left;
 		this.bottom = bottom;
-		valuesRowWise = createArray(width, height);
+		
+		this.valuesRowWise = valuesRowWise;
 	}
 
 	/**
